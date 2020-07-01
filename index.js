@@ -15,10 +15,6 @@ var _ai = require("react-icons/ai");
 
 var _fi = require("react-icons/fi");
 
-var _navigate = _interopRequireDefault(require("./navigate"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -107,7 +103,49 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-var navigate = _navigate["default"];
+var MENU_HEIGHT = 50; // ALTURA DEL MENU PARA DESCONTARLA DEL COMPONENTE
+
+var navigate = function navigate(id, duration) {
+  var menuHeight = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : MENU_HEIGHT;
+  var component = document.getElementById(id);
+
+  if (component && duration > 0) {
+    var positionY = component.offsetTop - menuHeight;
+    if (document.scrollingElement.scrollTop === positionY) return;
+    var totalScrollDistance = Math.abs(document.scrollingElement.scrollTop - positionY);
+    var scrollY = document.scrollingElement.scrollTop,
+        oldTimestamp = null;
+
+    var stepMore = function stepMore(newTimestamp) {
+      if (oldTimestamp !== null) {
+        scrollY += totalScrollDistance * (newTimestamp - oldTimestamp) / duration;
+        if (scrollY >= positionY) return document.scrollingElement.scrollTop = positionY;
+        document.scrollingElement.scrollTop = scrollY;
+      }
+
+      oldTimestamp = newTimestamp;
+      window.requestAnimationFrame(stepMore);
+    };
+
+    var stepLess = function stepLess(newTimestamp) {
+      if (oldTimestamp !== null) {
+        scrollY -= totalScrollDistance * (newTimestamp - oldTimestamp) / duration;
+        if (scrollY <= positionY) return document.scrollingElement.scrollTop = positionY;
+        document.scrollingElement.scrollTop = scrollY;
+      }
+
+      oldTimestamp = newTimestamp;
+      window.requestAnimationFrame(stepLess);
+    };
+
+    var step = function step(newTimestamp) {
+      if (scrollY < positionY) stepMore(newTimestamp);else stepLess(newTimestamp);
+    };
+
+    window.requestAnimationFrame(step);
+  }
+};
+
 exports.navigate = navigate;
 
 var MenuContainer = function MenuContainer(_ref) {

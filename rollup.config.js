@@ -1,5 +1,6 @@
-import resolve from '@rollup/plugin-node-resolve';
-import babel from '@rollup/plugin-babel';
+import resolve from "@rollup/plugin-node-resolve";
+import babel from "@rollup/plugin-babel";
+import commonjs from "@rollup/plugin-commonjs";
 
 export default {
   input: "src/MenuContainer.js",
@@ -9,6 +10,7 @@ export default {
   },
   plugins: [
     resolve(),
-    babel({ babelHelpers: 'bundled' })
+    babel({ babelHelpers: "bundled" }),
+    commonjs(),
   ],
 };

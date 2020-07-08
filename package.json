@@ -24,9 +24,7 @@
     "@rollup/plugin-commonjs": "^13.0.0",
     "@rollup/plugin-node-resolve": "^8.1.0",
     "babel-loader": "^8.1.0",
-    "react-icons": "^3.10.0",
     "rollup": "^2.18.2",
-    "styled-components": "^5.1.0",
     "webpack": "^4.43.0"
   }
 }

@@ -8,9 +8,6 @@ export default {
     file: "index.js",
     format: "cjs",
   },
-  plugins: [
-    resolve(),
-    babel({ babelHelpers: "bundled" }),
-    commonjs(),
-  ],
+  plugins: [resolve(), babel({ babelHelpers: "bundled" }), commonjs()],
+  external: ["react", "styled-components", "react-icons/ai", "react-icons/fi"],
 };

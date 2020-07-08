@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { FiMenu } from "react-icons/fi";
-import nav from "./navigate";
-
-export const navigate = nav;
 
 const MenuContainer = ({ children }) => {
   const [openmenu, setOpenmenu] = useState(false);
@@ -16,13 +13,15 @@ const MenuContainer = ({ children }) => {
 
   return (
     <>
-      <Container visible={openmenu} count={React.Children.count(children)}>
+      <Container>
         {openmenu ? (
           <CloseMenuIcon size={30} onClick={handleMenu} />
         ) : (
           <MenuIcon size={30} onClick={handleMenu} />
         )}
-        <Content>{children}</Content>
+        <Content visible={openmenu} count={React.Children.count(children)}>
+          {children}
+        </Content>
       </Container>
       <Spacing />
     </>
@@ -88,16 +87,21 @@ const Container = styled.nav`
   overflow: hidden;
   @media (max-width: 813px) {
     transition: all 1s;
-    height: ${({ visible, count }) => (visible ? count * 65 : 60)}px;
     text-align: center;
   }
 `;
+
+const getSize = (size) => (size > 300 ? 300 : size);
 
 const Content = styled.div`
   display: flex;
   height: 60px;
   align-items: center;
   @media (max-width: 813px) {
+    transition: all 1s;
+    height: ${({ visible, count }) =>
+      visible ? getSize(count * 60 + 60) : 0}px;
+    overflow: scroll;
     flex-direction: column;
   }
 `;

@@ -2983,51 +2983,8 @@ var FiMenu = function (props) {
 };
 FiMenu.displayName = "FiMenu";
 
-var MENU_HEIGHT = 50; // ALTURA DEL MENU PARA DESCONTARLA DEL COMPONENTE
-
-var nav = (function (id, duration) {
-  var menuHeight = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : MENU_HEIGHT;
-  var component = document.getElementById(id);
-
-  if (component && duration > 0) {
-    var positionY = component.offsetTop - menuHeight;
-    if (document.scrollingElement.scrollTop === positionY) return;
-    var totalScrollDistance = Math.abs(document.scrollingElement.scrollTop - positionY);
-    var scrollY = document.scrollingElement.scrollTop,
-        oldTimestamp = null;
-
-    var stepMore = function stepMore(newTimestamp) {
-      if (oldTimestamp !== null) {
-        scrollY += totalScrollDistance * (newTimestamp - oldTimestamp) / duration;
-        if (scrollY >= positionY) return document.scrollingElement.scrollTop = positionY;
-        document.scrollingElement.scrollTop = scrollY;
-      }
-
-      oldTimestamp = newTimestamp;
-      window.requestAnimationFrame(stepMore);
-    };
-
-    var stepLess = function stepLess(newTimestamp) {
-      if (oldTimestamp !== null) {
-        scrollY -= totalScrollDistance * (newTimestamp - oldTimestamp) / duration;
-        if (scrollY <= positionY) return document.scrollingElement.scrollTop = positionY;
-        document.scrollingElement.scrollTop = scrollY;
-      }
-
-      oldTimestamp = newTimestamp;
-      window.requestAnimationFrame(stepLess);
-    };
-
-    var step = function step(newTimestamp) {
-      if (scrollY < positionY) stepMore(newTimestamp);else stepLess(newTimestamp);
-    };
-
-    window.requestAnimationFrame(step);
-  }
-});
-
 function _templateObject7() {
-  var data = _taggedTemplateLiteral(["\n  display: flex;\n  height: 60px;\n  align-items: center;\n  @media (max-width: 813px) {\n    flex-direction: column;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  display: flex;\n  height: 60px;\n  align-items: center;\n  @media (max-width: 813px) {\n    transition: all 1s;\n    height: ", "px;\n    overflow: scroll;\n    flex-direction: column;\n  }\n"]);
 
   _templateObject7 = function _templateObject7() {
     return data;
@@ -3037,7 +2994,7 @@ function _templateObject7() {
 }
 
 function _templateObject6() {
-  var data = _taggedTemplateLiteral(["\n  padding: 0;\n  width: 100%;\n  margin: 0;\n  min-height: 60px;\n  text-align: left;\n  color: white;\n  background-color: black;\n  position: ", ";\n  z-index: 2;\n  overflow: hidden;\n  @media (max-width: 813px) {\n    transition: all 1s;\n    height: ", "px;\n    text-align: center;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  padding: 0;\n  width: 100%;\n  margin: 0;\n  min-height: 60px;\n  text-align: left;\n  color: white;\n  background-color: black;\n  position: ", ";\n  z-index: 2;\n  overflow: hidden;\n  @media (max-width: 813px) {\n    transition: all 1s;\n    text-align: center;\n  }\n"]);
 
   _templateObject6 = function _templateObject6() {
     return data;
@@ -3095,7 +3052,6 @@ function _templateObject() {
 
   return data;
 }
-var navigate = nav;
 
 var MenuContainer = function MenuContainer(_ref) {
   var children = _ref.children;
@@ -3110,16 +3066,16 @@ var MenuContainer = function MenuContainer(_ref) {
     e.stopPropagation();
   };
 
-  return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement(Container, {
-    visible: openmenu,
-    count: React__default.Children.count(children)
-  }, openmenu ? /*#__PURE__*/React__default.createElement(CloseMenuIcon, {
+  return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement(Container, null, openmenu ? /*#__PURE__*/React__default.createElement(CloseMenuIcon, {
     size: 30,
     onClick: handleMenu
   }) : /*#__PURE__*/React__default.createElement(MenuIcon, {
     size: 30,
     onClick: handleMenu
-  }), /*#__PURE__*/React__default.createElement(Content, null, children)), /*#__PURE__*/React__default.createElement(Spacing, null));
+  }), /*#__PURE__*/React__default.createElement(Content, {
+    visible: openmenu,
+    count: React__default.Children.count(children)
+  }, children)), /*#__PURE__*/React__default.createElement(Spacing, null));
 };
 
 var rotate = keyframes(_templateObject());
@@ -3129,12 +3085,72 @@ var CloseMenuIcon = styled(AiOutlineCloseCircle)(_templateObject4(), rotateClose
 var Spacing = styled.div(_templateObject5());
 var Container = styled.nav(_templateObject6(), function (props) {
   return props.isContent ? "initial" : "fixed";
-}, function (_ref2) {
+});
+
+var getSize = function getSize(size) {
+  return size > 300 ? 300 : size;
+};
+
+var Content = styled.div(_templateObject7(), function (_ref2) {
   var visible = _ref2.visible,
       count = _ref2.count;
-  return visible ? count * 65 : 60;
+  return visible ? getSize(count * 60 + 60) : 0;
 });
-var Content = styled.div(_templateObject7());
 
-exports.default = MenuContainer;
+var MENU_HEIGHT = 50; // ALTURA DEL MENU PARA DESCONTARLA DEL COMPONENTE
+
+var navigate = (function (id, duration) {
+  var menuHeight = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : MENU_HEIGHT;
+  var component = document.getElementById(id);
+
+  if (component && duration > 0) {
+    var positionY = component.offsetTop - menuHeight;
+    if (document.scrollingElement.scrollTop === positionY) return;
+    var totalScrollDistance = Math.abs(document.scrollingElement.scrollTop - positionY);
+    var scrollY = document.scrollingElement.scrollTop,
+        oldTimestamp = null;
+
+    var stepMore = function stepMore(newTimestamp) {
+      if (oldTimestamp !== null) {
+        scrollY += totalScrollDistance * (newTimestamp - oldTimestamp) / duration;
+        if (scrollY >= positionY) return document.scrollingElement.scrollTop = positionY;
+        document.scrollingElement.scrollTop = scrollY;
+      }
+
+      oldTimestamp = newTimestamp;
+      window.requestAnimationFrame(stepMore);
+    };
+
+    var stepLess = function stepLess(newTimestamp) {
+      if (oldTimestamp !== null) {
+        scrollY -= totalScrollDistance * (newTimestamp - oldTimestamp) / duration;
+        if (scrollY <= positionY) return document.scrollingElement.scrollTop = positionY;
+        document.scrollingElement.scrollTop = scrollY;
+      }
+
+      oldTimestamp = newTimestamp;
+      window.requestAnimationFrame(stepLess);
+    };
+
+    var step = function step(newTimestamp) {
+      if (scrollY < positionY) stepMore(newTimestamp);else stepLess(newTimestamp);
+    };
+
+    window.requestAnimationFrame(step);
+  }
+});
+
+function _templateObject$1() {
+  var data = _taggedTemplateLiteral(["\n  display: flex;\n  cursor: pointer;\n  align-items: center;\n  height: 60px;\n  margin: 5px 20px;\n  padding: 10px;\n  font-weight: normal;\n  justify-content: center;\n"]);
+
+  _templateObject$1 = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+var MenuItem = styled.h3(_templateObject$1());
+
+exports.MenuContainer = MenuContainer;
+exports.MenuItem = MenuItem;
 exports.navigate = navigate;

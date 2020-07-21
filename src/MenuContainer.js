@@ -3,7 +3,7 @@ import styled, { keyframes } from "styled-components";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { FiMenu } from "react-icons/fi";
 
-const MenuContainer = ({ children }) => {
+const MenuContainer = ({ children, color = "black" }) => {
   const [openmenu, setOpenmenu] = useState(false);
 
   const handleMenu = (e) => {
@@ -13,7 +13,7 @@ const MenuContainer = ({ children }) => {
 
   return (
     <>
-      <Container>
+      <Container color={color}>
         {openmenu ? (
           <CloseMenuIcon size={30} onClick={handleMenu} />
         ) : (
@@ -81,7 +81,7 @@ const Container = styled.nav`
   min-height: 60px;
   text-align: left;
   color: white;
-  background-color: black;
+  background-color: ${({ color }) => color};
   position: ${(props) => (props.isContent ? "initial" : "fixed")};
   z-index: 2;
   overflow: hidden;

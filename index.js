@@ -90,7 +90,7 @@ function _templateObject7() {
 }
 
 function _templateObject6() {
-  var data = _taggedTemplateLiteral(["\n  padding: 0;\n  width: 100%;\n  margin: 0;\n  min-height: 60px;\n  text-align: left;\n  color: white;\n  background-color: black;\n  position: ", ";\n  z-index: 2;\n  overflow: hidden;\n  @media (max-width: 813px) {\n    transition: all 1s;\n    text-align: center;\n  }\n"]);
+  var data = _taggedTemplateLiteral(["\n  padding: 0;\n  width: 100%;\n  margin: 0;\n  min-height: 60px;\n  text-align: left;\n  color: white;\n  background-color: ", ";\n  position: ", ";\n  z-index: 2;\n  overflow: hidden;\n  @media (max-width: 813px) {\n    transition: all 1s;\n    text-align: center;\n  }\n"]);
 
   _templateObject6 = function _templateObject6() {
     return data;
@@ -150,7 +150,9 @@ function _templateObject() {
 }
 
 var MenuContainer = function MenuContainer(_ref) {
-  var children = _ref.children;
+  var children = _ref.children,
+      _ref$color = _ref.color,
+      color = _ref$color === void 0 ? "black" : _ref$color;
 
   var _useState = React.useState(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -162,7 +164,9 @@ var MenuContainer = function MenuContainer(_ref) {
     e.stopPropagation();
   };
 
-  return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement(Container, null, openmenu ? /*#__PURE__*/React__default.createElement(CloseMenuIcon, {
+  return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement(Container, {
+    color: color
+  }, openmenu ? /*#__PURE__*/React__default.createElement(CloseMenuIcon, {
     size: 30,
     onClick: handleMenu
   }) : /*#__PURE__*/React__default.createElement(MenuIcon, {
@@ -179,7 +183,10 @@ var rotateClose = styled.keyframes(_templateObject2());
 var MenuIcon = styled__default(fi.FiMenu)(_templateObject3(), rotate, rotate);
 var CloseMenuIcon = styled__default(ai.AiOutlineCloseCircle)(_templateObject4(), rotateClose, rotateClose);
 var Spacing = styled__default.div(_templateObject5());
-var Container = styled__default.nav(_templateObject6(), function (props) {
+var Container = styled__default.nav(_templateObject6(), function (_ref2) {
+  var color = _ref2.color;
+  return color;
+}, function (props) {
   return props.isContent ? "initial" : "fixed";
 });
 
@@ -187,9 +194,9 @@ var getSize = function getSize(size) {
   return size > 300 ? 300 : size;
 };
 
-var Content = styled__default.div(_templateObject7(), function (_ref2) {
-  var visible = _ref2.visible,
-      count = _ref2.count;
+var Content = styled__default.div(_templateObject7(), function (_ref3) {
+  var visible = _ref3.visible,
+      count = _ref3.count;
   return visible ? getSize(count * 60 + 60) : 0;
 });
 

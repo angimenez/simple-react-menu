@@ -23,8 +23,8 @@
     "@rollup/plugin-babel": "^5.0.4",
     "@rollup/plugin-commonjs": "^13.0.0",
     "@rollup/plugin-node-resolve": "^8.1.0",
-    "babel-loader": "^8.1.0",
+    "babel-loader": "^8.3.0",
     "rollup": "^2.18.2",
-    "webpack": "^4.43.0"
+    "webpack": "^5.75.0"
   }
 }
